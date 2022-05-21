@@ -1,24 +1,11 @@
-# README
+# Who Wants to Be a Millionaire?
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+run:
+- `bundle`
+- `rails db:migrate`
+- `yarn install`
+- `yarn build`
+- `yarn build:css`
+- `rails s`
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Deploy: [Who Wants to Be a Millionaire?](https://millionaires-app.herokuapp.com/)
