@@ -56,6 +56,9 @@ h2, h3 {
   font-size: 175%;
 }
 
+.list-group-item{
+  color: #ffffff;
+}
 .list-group-prizes .list-group-item {
   background: rgba(213, 235, 255, 0.2);
   border-width: 1px;
