@@ -48,6 +48,7 @@ RSpec.describe Game, type: :model do
       # Текущий уровень игры и статус
       level = game_w_questions.current_level
       q = game_w_questions.current_game_question
+      prev_l = game_w_questions.previous_level
       expect(game_w_questions.status).to eq(:in_progress)
 
       game_w_questions.answer_current_question!(q.correct_answer_key)
@@ -61,6 +62,16 @@ RSpec.describe Game, type: :model do
       # Игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
       expect(game_w_questions.finished?).to be_falsey
+
+      # current_game_question
+      expect(q.level).to eq(level)
+
+      # previous_level
+      if prev_l > 0
+        expect(prev_l).to eq(level - 1)
+      else
+        expect(prev_l).to eq(-1)
+      end
     end
 
     it 'take_money! finishes the game' do
@@ -80,7 +91,6 @@ RSpec.describe Game, type: :model do
       expect(user.balance).to eq prize
     end
   end
-
 
   # группа тестов на проверку статуса игры
   context '.status' do
