@@ -63,9 +63,6 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.finished?).to be_falsey
     end
 
-
-    #--------------- Вариант решения ДЗ --------------------
-
     it 'take_money! finishes the game' do
       # берем игру и отвечаем на текущий вопрос
       q = game_w_questions.current_game_question
@@ -84,8 +81,6 @@ RSpec.describe Game, type: :model do
     end
   end
 
-
-  #--------------- Вариант решения ДЗ --------------------
 
   # группа тестов на проверку статуса игры
   context '.status' do
