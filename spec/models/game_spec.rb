@@ -109,7 +109,7 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  context 'previous_level' do
+  describe 'previous_level' do
     context 'when current level is 0' do
       it 'should return -1' do
         game_w_questions.current_level = 0
