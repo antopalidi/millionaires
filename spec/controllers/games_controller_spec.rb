@@ -110,11 +110,37 @@ RSpec.describe GamesController, type: :controller do
     context 'when the user is logged in' do
       before(:each) do
         sign_in user
-        put :answer, params: { id: game_w_questions.id }
         generate_questions(60)
+
+        put :answer,
+            params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }
       end
 
       let(:game) { assigns(:game) }
+
+      it ' should not be finished' do
+        expect(game.finished?).to be_falsey
+      end
+
+      it 'current level should be > 0' do
+        expect(game.current_level).to be > 0
+      end
+
+      it 'redirect to game in progress' do
+        expect(response).to redirect_to(game_path(game))
+      end
+
+      it 'should not be flash' do
+        expect(flash.empty?).to be_truthy
+      end
+
+      context 'correct answer' do
+
+      end
+
+      context 'wrong answer' do
+
+      end
     end
   end
 
