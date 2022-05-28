@@ -144,4 +144,60 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions.first)
     end
   end
+
+  describe '.answer_current_question!' do
+    let(:question) { game_w_questions.current_game_question }
+
+    context 'when correct answer'  do
+      context 'when answer to the last question'  do
+        before do
+          game_w_questions.current_level = Question::QUESTION_LEVELS.max
+          game_w_questions.answer_current_question!(question.correct_answer_key)
+        end
+
+        it 'should finish the game' do
+          expect(game_w_questions.finished?).to be_truthy
+        end
+
+        it 'should status :won' do
+          expect(game_w_questions.status).to eq(:won)
+        end
+
+        it 'should get the grand prize' do
+          expect(game_w_questions.prize).to eq(Game::PRIZES[Question::QUESTION_LEVELS.max])
+        end
+
+        it 'should increase the balance' do
+          expect(user.balance).to eq(Game::PRIZES[Question::QUESTION_LEVELS.max])
+        end
+      end
+
+      context 'when the question is not the last' do
+        it 'should increase game level +1' do
+          level = game_w_questions.current_level
+          game_w_questions.answer_current_question!(question.correct_answer_key)
+          expect(game_w_questions.current_level).to eq(level + 1)
+        end
+      end
+    end
+
+    context 'when wrong answer'  do
+      it 'should return false for wrong answer' do
+        expect(game_w_questions.answer_current_question!('a')).to be_falsey
+      end
+
+      it 'should return status fail' do
+        game_w_questions.answer_current_question!('a')
+        expect(game_w_questions.status).to eq(:fail)
+      end
+    end
+
+    context 'when answer is given after the time has expired'  do
+      it 'should returns false' do
+        game_w_questions.finished_at = Time.now
+        game_w_questions.created_at = 1.hour.ago
+        expect(game_w_questions.answer_current_question!(question.correct_answer_key)).to be_falsey
+      end
+    end
+  end
 end
