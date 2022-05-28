@@ -53,6 +53,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
 
   # Гем, который позволяет смотреть, что видит capybara
   gem 'launchy'
