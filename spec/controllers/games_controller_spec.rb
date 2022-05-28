@@ -89,4 +89,88 @@ RSpec.describe GamesController, type: :controller do
       end
     end
   end
+
+  describe '#answer' do
+    context 'when the user is not logged in' do
+      before { put :answer, params: { id: game_w_questions.id } }
+
+      it 'should return status not 200' do
+        expect(response.status).not_to eq(200)
+      end
+
+      it 'should redirect to the new session path' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it 'should be alert' do
+        expect(flash[:alert]).to be
+      end
+    end
+
+    context 'when the user is logged in' do
+      before(:each) do
+        sign_in user
+        put :answer, params: { id: game_w_questions.id }
+        generate_questions(60)
+      end
+
+      let(:game) { assigns(:game) }
+    end
+  end
+
+  describe '#take_money' do
+    context 'when the user is not logged in' do
+      before { put :take_money, params: { id: game_w_questions.id } }
+
+      it 'should return status not 200' do
+        expect(response.status).not_to eq(200)
+      end
+
+      it 'should redirect to the new session path' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it 'should be alert' do
+        expect(flash[:alert]).to be
+      end
+    end
+
+    context 'when the user is logged in' do
+      before(:each) do
+        sign_in user
+        put :take_money, params: { id: game_w_questions.id }
+        generate_questions(60)
+      end
+
+      let(:game) { assigns(:game) }
+    end
+  end
+
+  describe '#help' do
+    context 'when the user is not logged in' do
+      before { put :help, params: { id: game_w_questions.id } }
+
+      it 'should return status not 200' do
+        expect(response.status).not_to eq(200)
+      end
+
+      it 'should redirect to the new session path' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it 'should be alert' do
+        expect(flash[:alert]).to be
+      end
+    end
+
+    context 'when the user is logged in' do
+      before(:each) do
+        sign_in user
+        put :help, params: { id: game_w_questions.id }
+        generate_questions(60)
+      end
+
+      let(:game) { assigns(:game) }
+    end
+  end
 end
