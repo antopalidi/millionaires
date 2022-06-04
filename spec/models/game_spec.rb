@@ -62,7 +62,7 @@ RSpec.describe Game, type: :model do
 
         # Игра продолжается
         expect(game_w_questions.status).to eq(:in_progress)
-        expect(game_w_questions.finished?).to be_falsey
+        expect(game_w_questions.finished?).to be false
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Game, type: :model do
 
         # проверяем что закончилась игра и пришли деньги игроку
         expect(game_w_questions.status).to eq :money
-        expect(game_w_questions.finished?).to be_truthy
+        expect(game_w_questions.finished?).to be true
         expect(user.balance).to eq prize
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe Game, type: :model do
     # перед каждым тестом "завершаем игру"
     before(:each) do
       game_w_questions.finished_at = Time.now
-      expect(game_w_questions.finished?).to be_truthy
+      expect(game_w_questions.finished?).to be true
     end
 
     context 'when the game is won' do
