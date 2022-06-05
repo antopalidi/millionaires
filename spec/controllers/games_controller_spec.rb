@@ -108,38 +108,58 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context 'when the user is logged in' do
-      before(:each) do
+      before do
         sign_in user
         generate_questions(60)
 
-        put :answer,
-            params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }
+        put :answer, params: { id: game_w_questions.id, letter: answer_key }
       end
 
-      let(:game) { assigns(:game) }
-
-      it 'continue game' do
-        expect(game.finished?).to be false
-      end
-
-      it 'current level should be > 0' do
-        expect(game.current_level).to be > 0
-      end
-
-      it 'redirect to game in progress' do
-        expect(response).to redirect_to(game_path(game))
-      end
-
-      it 'no flash msg' do
-        expect(flash.empty?).to be true
-      end
+      let!(:game) { assigns(:game) }
 
       context 'correct answer' do
+        let!(:answer_key) { game_w_questions.current_game_question.correct_answer_key }
+
+        it 'continue game' do
+          expect(game.finished?).to be false
+        end
+
+        it 'current level should be > 0' do
+          expect(game.current_level).to be > 0
+        end
+
+        it 'redirect to game in progress' do
+          expect(response).to redirect_to(game_path(game))
+        end
+
+        it 'no flash msg' do
+          expect(flash.empty?).to be true
+        end
 
       end
 
       context 'wrong answer' do
+        let!(:answer_key) { (%w[a b c d] - [game_w_questions.current_game_question.correct_answer_key]).sample }
 
+        it 'finish game' do
+          expect(game.finished?).to be true
+        end
+
+        it 'return status :fail' do
+          expect(game.status).to eq(:fail)
+        end
+
+        it 'current level 0' do
+          expect(game.current_level).to be 0
+        end
+
+        it 'redirect to user profile' do
+          expect(response).to redirect_to(user_path(user))
+        end
+
+        it 'flash alert' do
+          expect(flash[:alert]).to be
+        end
       end
     end
   end
