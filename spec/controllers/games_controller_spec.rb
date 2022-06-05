@@ -7,18 +7,18 @@ RSpec.describe GamesController, type: :controller do
   let(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user) }
 
   describe '#show' do
-    context 'when the user is not logged in' do
+    context 'when anonymous' do
       before { get :show, params: { id: game_w_questions.id } }
 
-      it 'should return status not 200' do
+      it 'return status not 200' do
         expect(response.status).not_to eq(200)
       end
 
-      it 'should redirect to the new session path' do
+      it 'redirect to the new session path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'should be alert' do
+      it 'flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -53,18 +53,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#create' do
-    context 'when the user is not logged in' do
+    context 'when anonymous' do
       before { post :create }
 
-      it 'should return status not 200' do
+      it 'return status not 200' do
         expect(response.status).not_to eq(200)
       end
 
-      it 'should redirect to the new session path' do
+      it 'redirect to the new session path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'should be alert' do
+      it 'flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe GamesController, type: :controller do
           expect(game.finished?).to be false
         end
 
-        it 'redirects to game in progress' do
+        it 'redirect to game in progress' do
           expect(response).to redirect_to(game_path(game))
         end
       end
@@ -91,18 +91,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#answer' do
-    context 'when the user is not logged in' do
+    context 'when anonymous' do
       before { put :answer, params: { id: game_w_questions.id } }
 
-      it 'should return status not 200' do
+      it 'return status not 200' do
         expect(response.status).not_to eq(200)
       end
 
-      it 'should redirect to the new session path' do
+      it 'redirect to the new session path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'should be alert' do
+      it 'flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -118,8 +118,8 @@ RSpec.describe GamesController, type: :controller do
 
       let(:game) { assigns(:game) }
 
-      it ' should not be finished' do
-        expect(game.finished?).to be_falsey
+      it 'continue game' do
+        expect(game.finished?).to be false
       end
 
       it 'current level should be > 0' do
@@ -130,8 +130,8 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(game_path(game))
       end
 
-      it 'should not be flash' do
-        expect(flash.empty?).to be_truthy
+      it 'no flash msg' do
+        expect(flash.empty?).to be true
       end
 
       context 'correct answer' do
@@ -145,18 +145,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#take_money' do
-    context 'when the user is not logged in' do
+    context 'when anonymous' do
       before { put :take_money, params: { id: game_w_questions.id } }
 
-      it 'should return status not 200' do
+      it 'return status not 200' do
         expect(response.status).not_to eq(200)
       end
 
-      it 'should redirect to the new session path' do
+      it 'redirect to the new session path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'should be alert' do
+      it 'flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -173,18 +173,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#help' do
-    context 'when the user is not logged in' do
+    context 'when anonymous' do
       before { put :help, params: { id: game_w_questions.id } }
 
-      it 'should return status not 200' do
+      it 'return status not 200' do
         expect(response.status).not_to eq(200)
       end
 
-      it 'should redirect to the new session path' do
+      it 'redirect to the new session path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'should be alert' do
+      it 'flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -199,4 +199,5 @@ RSpec.describe GamesController, type: :controller do
       let(:game) { assigns(:game) }
     end
   end
+
 end
